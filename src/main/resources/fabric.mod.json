@@ -1,0 +1,38 @@
+{
+  "schemaVersion": 1,
+  "id": "lunacy",
+  "version": "${version}",
+
+  "name": "lunacy",
+  "description": "",
+  "authors": [
+    "ronan",
+    "apatell"
+  ],
+  "contact": {},
+
+  "license": "All-Rights-Reserved",
+  "icon": "assets/lunacy/icon.png",
+
+  "environment": "*",
+  "entrypoints": {
+    "fabric-datagen": ["net.lunacy.lunacy.client.LunacyDataGenerator"],
+    "client": ["net.lunacy.lunacy.client.LunacyClient"],
+    "main": ["net.lunacy.lunacy.Lunacy"]
+  },
+
+  "mixins": [
+    "lunacy.mixins.json"
+    ,{
+      "config": "lunacy.client.mixins.json",
+      "environment": "client"
+    }
+  ],
+
+  "depends": {
+    "fabricloader": ">=${loader_version}",
+    "fabric-language-kotlin": ">=${kotlin_loader_version}",
+    "fabric-api": "*",
+    "minecraft": "${minecraft_version}"
+  }
+}
