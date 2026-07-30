@@ -2,8 +2,12 @@ package net.lunacy.lunacy
 
 import net.fabricmc.api.ModInitializer
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents
+import net.lunacy.lunacy.Lunacy.Companion.LOGGER
+import net.minecraft.core.Registry
+import net.minecraft.core.registries.BuiltInRegistries
 import net.minecraft.network.chat.Component
 import net.minecraft.resources.Identifier
+import net.minecraft.world.item.Item
 import net.minecraft.world.item.Items
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
@@ -27,12 +31,7 @@ class Lunacy : ModInitializer {
 
                     if (advancement != null) {
                         val progress = it.advancements.getOrStartProgress(advancement)
-//                        it.advancements.award(
-//                            advancement,
-//                            "java_trigger"
-//                        )
                         if (!progress.isDone) {
-                            // Перебираем незавершенные критерии (в вашем случае "java_trigger")
                             progress.remainingCriteria.forEach { criterion ->
                                 it.advancements.award(advancement, criterion)
                             }

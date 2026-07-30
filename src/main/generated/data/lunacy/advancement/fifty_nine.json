@@ -1,0 +1,20 @@
+{
+  "criteria": {
+    "java_trigger": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "description": "Держать 59 предметов в 2 руках",
+    "icon": {
+      "id": "minecraft:rabbit"
+    },
+    "title": "595959"
+  },
+  "requirements": [
+    [
+      "java_trigger"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

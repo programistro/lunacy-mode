@@ -56,7 +56,7 @@ class LunacyClient : ClientModInitializer {
                 val itemType = stack.item
 
                 if(itemType == Items.COAL){
-                    player.sendSystemMessage(Component.literal("Вы сломали блок алмазной киркой!"))
+//                    player.sendSystemMessage(Component.literal("Вы сломали блок алмазной киркой!"))
                 }
             }
         }
