@@ -5,12 +5,12 @@
     }
   },
   "display": {
-    "background": "lunacy:fifty_nine",
-    "description": "Поспать под открытым небом",
+    "background": "lunacy:small_tok",
+    "description": "Ебнуть орешником по малой токмачке",
     "icon": {
-      "id": "minecraft:red_bed"
+      "id": "minecraft:tnt"
     },
-    "title": "Логово бомжей"
+    "title": "Малая Токмачка"
   },
   "requirements": [
     [

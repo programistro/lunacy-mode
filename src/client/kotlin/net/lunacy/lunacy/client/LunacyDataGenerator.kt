@@ -52,7 +52,7 @@ class LunacyModAdvancementProvider : FabricAdvancementProvider {
 
         val sleepBomz = Advancement.Builder.advancement()
             .display(
-                ItemStackTemplate(Items.INK_SAC),
+                ItemStackTemplate(Items.BED.red),
                 Component.literal("Логово бомжей"),    // Название
                 Component.literal("Поспать под открытым небом"),   // Описание
                 Identifier.fromNamespaceAndPath("lunacy", "fifty_nine"),
@@ -63,5 +63,19 @@ class LunacyModAdvancementProvider : FabricAdvancementProvider {
             .build(Identifier.fromNamespaceAndPath("lunacy", "sleep_bomz"))
 
         consumer.accept(sleepBomz)
+
+        val smallTok = Advancement.Builder.advancement()
+            .display(
+                ItemStackTemplate(Items.TNT),
+                Component.literal("Малая Токмачка"),    // Название
+                Component.literal("Ебнуть орешником по малой токмачке"),   // Описание
+                Identifier.fromNamespaceAndPath("lunacy", "small_tok"),
+                AdvancementType.TASK,
+                true, true, false
+            )
+            .addCriterion("java_trigger", CriteriaTriggers.IMPOSSIBLE.createCriterion(ImpossibleTrigger.TriggerInstance()))
+            .build(Identifier.fromNamespaceAndPath("lunacy", "small_tok"))
+
+        consumer.accept(smallTok)
     }
 }

@@ -1,17 +1,23 @@
 package net.lunacy.lunacy
 
+import com.jcraft.jorbis.Block
 import net.fabricmc.api.ModInitializer
 import net.fabricmc.fabric.api.entity.event.v1.EntitySleepEvents
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents
+import net.fabricmc.fabric.api.event.player.UseBlockCallback
+import net.fabricmc.fabric.api.event.player.UseItemCallback
 import net.lunacy.lunacy.Lunacy.Companion.LOGGER
 import net.minecraft.core.Registry
 import net.minecraft.core.registries.BuiltInRegistries
 import net.minecraft.network.chat.Component
 import net.minecraft.resources.Identifier
 import net.minecraft.server.level.ServerPlayer
+import net.minecraft.tags.StructureTags
+import net.minecraft.world.InteractionResult
 import net.minecraft.world.entity.player.Player
 import net.minecraft.world.item.Item
 import net.minecraft.world.item.Items
+import net.minecraft.world.level.block.Blocks
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
@@ -66,7 +72,43 @@ class Lunacy : ModInitializer {
                         }
                     }
                 }
+
+                val serverLevel = it.level()
+                val blockPos = it.blockPosition()
+                val villageStart = serverLevel.structureManager().getStructureWithPieceAt(blockPos, StructureTags.VILLAGE)
+                if (villageStart.isValid) {
+                    LOGGER.info("${it.name} в деревне!")
+
+                }
             }
+        }
+
+        UseBlockCallback.EVENT.register { player, level, hand, result ->
+           if(!level.isClientSide){
+               val serverPlayer = player as ServerPlayer
+               val stack = player.getItemInHand(hand)
+               val blockPos = result.blockPos
+               val blockState = level.getBlockState(blockPos)
+
+               if (stack.`is`(Items.FLINT_AND_STEEL) && blockState.`is`(Blocks.TNT)) {
+                   val server = level.server
+                   server?.let { server ->
+                       val advancement = server.advancements
+                           .get(Identifier.fromNamespaceAndPath("lunacy", "small_tok"))
+
+                       if (advancement != null) {
+                           val progress = serverPlayer.advancements.getOrStartProgress(advancement)
+                           if (!progress.isDone) {
+                               progress.remainingCriteria.forEach { criterion ->
+                                   serverPlayer.advancements.award(advancement, criterion)
+                               }
+                               server.playerList.saveAll()
+                           }
+                       }
+                   }
+               }
+           }
+            InteractionResult.PASS
         }
     }
 
