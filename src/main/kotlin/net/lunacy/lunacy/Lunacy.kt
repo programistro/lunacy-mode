@@ -15,9 +15,12 @@ import net.minecraft.server.level.ServerPlayer
 import net.minecraft.tags.StructureTags
 import net.minecraft.world.InteractionResult
 import net.minecraft.world.entity.player.Player
+import net.minecraft.world.entity.projectile.ProjectileUtil
 import net.minecraft.world.item.Item
 import net.minecraft.world.item.Items
 import net.minecraft.world.level.block.Blocks
+import net.minecraft.world.phys.EntityHitResult
+import net.minecraft.world.phys.Vec3
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
@@ -73,13 +76,52 @@ class Lunacy : ModInitializer {
                     }
                 }
 
-                val serverLevel = it.level()
-                val blockPos = it.blockPosition()
-                val villageStart = serverLevel.structureManager().getStructureWithPieceAt(blockPos, StructureTags.VILLAGE)
-                if (villageStart.isValid) {
-                    LOGGER.info("${it.name} в деревне!")
+                val maxDistance = 10.0
 
+                val startPos: Vec3 = it.getEyePosition(1.0f)
+                val lookVec: Vec3 = it.getViewVector(1.0f)
+
+                val endPos: Vec3 = startPos.add(lookVec.x * maxDistance, lookVec.y * maxDistance, lookVec.z * maxDistance)
+                val searchBox = it.boundingBox.expandTowards(lookVec.scale(maxDistance)).inflate(1.0)
+                val entityHit: EntityHitResult? = ProjectileUtil.getEntityHitResult(
+                    it,       // Сущность, которую нужно игнорировать (сам игрок)
+                    startPos,     // Точка старта луча
+                    endPos,       // Точка конца луча
+                    searchBox,    // Область поиска
+                    { entity -> !entity.isSpectator && entity.isAlive }, // Фильтр (игнорируем наблюдателей и мертвых)
+                    maxDistance * maxDistance // Дистанция в квадрате
+                )
+
+                if (entityHit != null) {
+                    val targetedEntity = entityHit.entity // Это сущность, на которую смотрит игрок!
+
+                    // Пример использования: если игрок смотрит на Зомби
+                    if (targetedEntity is net.minecraft.world.entity.monster.EnderMan) {
+//                        player.sendSystemMessage(net.minecraft.network.chat.Component.literal("Вы пристально смотрите на Зомби..."))
+                        val advancement = server.advancements
+                            .get(Identifier.fromNamespaceAndPath("lunacy", "kniga"))
+
+                        if (advancement != null) {
+                            val progress = it.advancements.getOrStartProgress(advancement)
+                            if (!progress.isDone) {
+                                progress.remainingCriteria.forEach { criterion ->
+                                    it.advancements.award(advancement, criterion)
+                                }
+                                server.playerList.saveAll()
+                            }
+                        }
+                    }
                 }
+
+//                val serverLevel = it.level()
+//                val blockPos = it.blockPosition()
+//                val villageStart = serverLevel.structureManager().getStructureWithPieceAt(blockPos, StructureTags.VILLAGE)
+//                if (villageStart.isValid) {
+//                    LOGGER.info("${it.name} в деревне!")
+//
+//                }
+
+
             }
         }
 
@@ -90,19 +132,24 @@ class Lunacy : ModInitializer {
                val blockPos = result.blockPos
                val blockState = level.getBlockState(blockPos)
 
-               if (stack.`is`(Items.FLINT_AND_STEEL) && blockState.`is`(Blocks.TNT)) {
-                   val server = level.server
-                   server?.let { server ->
-                       val advancement = server.advancements
-                           .get(Identifier.fromNamespaceAndPath("lunacy", "small_tok"))
+               val serverLevel = serverPlayer.level()
+               val villageStart = serverLevel.structureManager().getStructureWithPieceAt(blockPos, StructureTags.VILLAGE)
+               if (villageStart.isValid) {
+                   LOGGER.info("${serverPlayer.name} в деревне!")
+                   if (stack.`is`(Items.FLINT_AND_STEEL) && blockState.`is`(Blocks.TNT)) {
+                       val server = level.server
+                       server?.let { server ->
+                           val advancement = server.advancements
+                               .get(Identifier.fromNamespaceAndPath("lunacy", "small_tok"))
 
-                       if (advancement != null) {
-                           val progress = serverPlayer.advancements.getOrStartProgress(advancement)
-                           if (!progress.isDone) {
-                               progress.remainingCriteria.forEach { criterion ->
-                                   serverPlayer.advancements.award(advancement, criterion)
+                           if (advancement != null) {
+                               val progress = serverPlayer.advancements.getOrStartProgress(advancement)
+                               if (!progress.isDone) {
+                                   progress.remainingCriteria.forEach { criterion ->
+                                       serverPlayer.advancements.award(advancement, criterion)
+                                   }
+                                   server.playerList.saveAll()
                                }
-                               server.playerList.saveAll()
                            }
                        }
                    }
@@ -110,6 +157,8 @@ class Lunacy : ModInitializer {
            }
             InteractionResult.PASS
         }
+
+
     }
 
     companion object {

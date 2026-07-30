@@ -77,5 +77,19 @@ class LunacyModAdvancementProvider : FabricAdvancementProvider {
             .build(Identifier.fromNamespaceAndPath("lunacy", "small_tok"))
 
         consumer.accept(smallTok)
+
+        val kniga = Advancement.Builder.advancement()
+            .display(
+                ItemStackTemplate(Items.ENDERMAN_SPAWN_EGG),
+                Component.literal("кНига!?"),    // Название
+                Component.literal("Увидеть в темноте Эндермена"),   // Описание
+                Identifier.fromNamespaceAndPath("lunacy", "kniga"),
+                AdvancementType.TASK,
+                true, true, false
+            )
+            .addCriterion("java_trigger", CriteriaTriggers.IMPOSSIBLE.createCriterion(ImpossibleTrigger.TriggerInstance()))
+            .build(Identifier.fromNamespaceAndPath("lunacy", "kniga"))
+
+        consumer.accept(kniga)
     }
 }

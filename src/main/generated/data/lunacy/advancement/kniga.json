@@ -1,0 +1,21 @@
+{
+  "criteria": {
+    "java_trigger": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "background": "lunacy:kniga",
+    "description": "Увидеть в темноте Эндермена",
+    "icon": {
+      "id": "minecraft:enderman_spawn_egg"
+    },
+    "title": "кНига!?"
+  },
+  "requirements": [
+    [
+      "java_trigger"
+    ]
+  ],
+  "sends_telemetry_event": true
+}
