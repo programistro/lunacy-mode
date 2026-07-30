@@ -1,0 +1,21 @@
+{
+  "criteria": {
+    "java_trigger": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "background": "lunacy:fifty_nine",
+    "description": "Поспать под открытым небом",
+    "icon": {
+      "id": "minecraft:ink_sac"
+    },
+    "title": "Логово бомжей"
+  },
+  "requirements": [
+    [
+      "java_trigger"
+    ]
+  ],
+  "sends_telemetry_event": true
+}
