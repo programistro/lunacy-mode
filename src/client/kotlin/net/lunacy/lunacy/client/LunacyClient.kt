@@ -50,15 +50,15 @@ class LunacyClient : ClientModInitializer {
 //
 //                player.sendSystemMessage(Component.literal("You've used '" + item + "' as a wrong tool: " + wrongToolUsedCount + " times."))
 //            }
-            if(player is ServerPlayer) {
-                val stack = player.mainHandItem
-
-                val itemType = stack.item
-
-                if(itemType == Items.COAL){
-//                    player.sendSystemMessage(Component.literal("Вы сломали блок алмазной киркой!"))
-                }
-            }
+//            if(player is ServerPlayer) {
+//                val stack = player.mainHandItem
+//
+//                val itemType = stack.item
+//
+//                if(itemType == Items.COAL){
+////                    player.sendSystemMessage(Component.literal("Вы сломали блок алмазной киркой!"))
+//                }
+//            }
         }
     }
 

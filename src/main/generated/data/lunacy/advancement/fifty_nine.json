@@ -5,6 +5,7 @@
     }
   },
   "display": {
+    "background": "lunacy:fifty_nine",
     "description": "Держать 59 предметов в 2 руках",
     "icon": {
       "id": "minecraft:rabbit"

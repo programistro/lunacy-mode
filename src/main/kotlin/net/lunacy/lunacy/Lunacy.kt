@@ -20,11 +20,15 @@ class Lunacy : ModInitializer {
                 LOGGER.info("Sending Lunacy Player $it")
 
                 val stack = it.mainHandItem
+                val secondStack = it.offhandItem
                 val itemType = stack.item
                 val coals = Items.COAL
 
-                if (stack.`is`(Items.COAL) && stack.count == 59) {
-                    it.sendSystemMessage(Component.literal("59"))
+                //if (stack.`is`(Items.COAL) && stack.count == 59 && secondStack.`is`(Items.COAL) &&
+                //                    secondStack.count == 59) {
+
+                if (stack.count == 59 && secondStack.count == 59) {
+//                    it.sendSystemMessage(Component.literal("59"))
 
                     val advancement = server.advancements
                         .get(Identifier.fromNamespaceAndPath("lunacy", "fifty_nine"))
@@ -35,14 +39,10 @@ class Lunacy : ModInitializer {
                             progress.remainingCriteria.forEach { criterion ->
                                 it.advancements.award(advancement, criterion)
                             }
+                            server.playerList.saveAll()
                         }
                     }
                 }
-
-//                if(itemType == Items.COAL) {
-//                    it.sendSystemMessage(Component.literal("11111"))
-//
-//                }
             }
         }
     }

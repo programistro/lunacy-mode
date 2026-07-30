@@ -41,7 +41,7 @@ class LunacyModAdvancementProvider : FabricAdvancementProvider {
                 ItemStackTemplate(Items.RABBIT),
                 Component.literal("595959"),    // Название
                 Component.literal("Держать 59 предметов в 2 руках"),   // Описание
-                null,
+                Identifier.fromNamespaceAndPath("lunacy", "fifty_nine"),
                 AdvancementType.TASK,
                 true, true, false
             )
