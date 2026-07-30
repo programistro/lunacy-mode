@@ -1,0 +1,23 @@
+﻿{
+  "display": {
+    "icon": {
+      "id": "minecraft:fifti_nine"
+    },
+    "title": {
+      "text": "595959"
+    },
+    "description": {
+      "text": "Держать 59 предметов в 2 руках"
+    }
+  },
+  "criteria": {
+    "java_trigger": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "requirements": [
+    [
+      "java_trigger"
+    ]
+  ]
+}

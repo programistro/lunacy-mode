@@ -1,0 +1,21 @@
+﻿{
+  "display": {
+    "icon": {
+      "id": "mymod:titanium_ingot"
+    },
+    "title": {
+      "text": "Промышленник"
+    },
+    "description": {
+      "text": "Выплавите как минимум 10 слитков титана!"
+    }
+  },
+  "criteria": {
+    "smelted_enough_titanium": {
+      "trigger": "mymod:titanium_smelted",
+      "conditions": {
+        "min_count": 10
+      }
+    }
+  }
+}
